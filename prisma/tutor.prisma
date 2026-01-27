@@ -1,0 +1,19 @@
+model TutorProfile {
+    id     String @id @default(uuid())
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id])
+
+    bio             String?
+    experienceYears Int
+    hourlyRate      Int
+    rating          Float   @default(0)
+    totalReviews    Int     @default(0)
+    isApproved      Boolean @default(false)
+
+    categories     TutorCategory[]
+    availabilities Availability[]
+    reviews   Review[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

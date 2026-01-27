@@ -1,0 +1,9 @@
+model Availability {
+    id        String       @id @default(uuid())
+    tutorId   String
+    tutor     TutorProfile @relation(fields: [tutorId], references: [id])
+    dayOfWeek Int
+    startTime String
+    endTime   String
+    isActive  Boolean      @default(true)
+}

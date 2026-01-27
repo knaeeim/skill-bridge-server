@@ -1,0 +1,9 @@
+model StudentProfile {
+    id       String  @id @default(uuid())
+    userId   String  @unique
+    user     User    @relation(fields: [userId], references: [id])
+    bio      String?
+    timezone String?
+
+    createdAt DateTime @default(now())
+}

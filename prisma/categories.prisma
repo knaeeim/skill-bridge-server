@@ -1,8 +1,0 @@
-model Category {
-    id       String  @id @default(uuid())
-    name     String
-    isActive Boolean @default(true)
-
-    tutors   TutorCategory[]
-    bookings Booking[]
-}

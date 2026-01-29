@@ -10,6 +10,25 @@ interface tutorInfo {
     availabilities?: Availability[]
 }
 
+const getAllTutors = async () => {
+    try {
+        return await prisma.user.findMany({
+            where: {
+                status: "ACTIVE",
+                role: "TUTOR"
+            },
+            include: {
+                tutorProfile: true
+            }
+        })
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Fetching all tutors failed");
+    }
+}
+
 const createTutorProfile = async (tutorData: tutorInfo) => {
     try {
         const { availabilities, ...rest } = tutorData;
@@ -73,27 +92,27 @@ const updateTutorProfile = async (tutorId: string, tutorData: tutorInfo) => {
 const seeRatingAndReviews = async (tutorId: string) => {
     try {
         const result = await prisma.tutorProfile.findUnique({
-            where: { id: tutorId }, 
+            where: { id: tutorId },
             select: {
-                rating : true,
-                totalReviews : true,
-                reviews : {
-                    select : {
-                        id : true, 
-                        rating : true, 
-                        comment : true,
-                        createdAt : true,
+                rating: true,
+                totalReviews: true,
+                reviews: {
+                    select: {
+                        id: true,
+                        rating: true,
+                        comment: true,
+                        createdAt: true,
 
                         // get student info 
-                        student : {
-                            select : {
-                                name : true, 
-                                image : true
+                        student: {
+                            select: {
+                                name: true,
+                                image: true
                             }
                         }
-                    }, 
-                    orderBy : {
-                        createdAt : "desc"
+                    },
+                    orderBy: {
+                        createdAt: "desc"
                     }
                 }
             }
@@ -107,9 +126,28 @@ const seeRatingAndReviews = async (tutorId: string) => {
     }
 }
 
+const getTutorProfile = async (tutorId: string) => {
+    try {
+        const result = await prisma.tutorProfile.findUnique({
+            where: { userId: tutorId },
+            include: {
+                user: true
+            }
+        })
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Fetching tutor profile failed");
+    }
+}
+
 
 export const tutorServices = {
     createTutorProfile,
-    updateTutorProfile, 
-    seeRatingAndReviews
+    updateTutorProfile,
+    seeRatingAndReviews,
+    getAllTutors,
+    getTutorProfile
 }

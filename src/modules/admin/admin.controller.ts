@@ -33,7 +33,8 @@ const manageUserStatus = async (req: Request, res: Response) => {
 
 const getAllBookings = async (req: Request, res: Response) => {
     try {
-        
+        const result = await adminServices.getAllBookings(); 
+        return res.status(200).json({ success: true, data: result });
     } catch (error : unknown) {
         if(error instanceof Error){
             return res.status(500).json({ message: error.message });

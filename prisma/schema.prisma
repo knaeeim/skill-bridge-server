@@ -167,14 +167,13 @@ model Availability {
 }
 
 // ===== CATEGORY MODELS =====
-// model Category {
-//   id       String  @id @default(uuid())
-//   name     String
-//   isActive Boolean @default(true)
+model Category {
+  id       String  @id @default(uuid())
+  name     String
+  isActive Boolean @default(true)
 
-//   // tutors   TutorCategory[]
-//   bookings Booking[]
-// }
+  // tutors   TutorCategory[] 
+}
 
 // model TutorCategory {
 //   tutorId    String

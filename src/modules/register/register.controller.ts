@@ -3,40 +3,41 @@ import { registrationServices } from "./register.service";
 import { tutorServices } from "../tutor/tutor.service";
 import { UserRole } from "../../middleware/auth";
 import { studentService } from "../student/student.service";
+import { User } from "better-auth/types";
 
 interface StudentProfile {
-    userId : string;
+    userId: string;
     bio?: string[];
 }
 
 interface TutorProfile {
-    userId : string;
-    bio? : string[];
-    experienceYears : number;
-    hourlyRate : number;
-    category : string[];
-    availabilities : string[]
+    userId: string;
+    bio?: string[];
+    experienceYears: number;
+    hourlyRate: number;
+    category: string[];
+    availabilities: string[]
 }
 
 const register = async (req: Request, res: Response) => {
     try {
         const { Profile, ...userData } = req.body;
         const result = await registrationServices.register({ email: userData.email, password: userData.password, name: userData.name, role: userData.role });
-        
-        if(!result){
+
+        if (!result) {
             throw new Error("Registration failed");
         }
-        
-        const userId = result.id; 
 
-        if(userData.role === UserRole.TUTOR){
+        const userId = result.id;
+
+        if (userData.role === UserRole.TUTOR) {
             await tutorServices.createTutorProfile({
-                userId, 
+                userId,
                 ...Profile
             })
         }
 
-        if(userData.role === UserRole.STUDENT){
+        if (userData.role === UserRole.STUDENT) {
             await studentService.createStudentProfile({
                 userId,
                 ...Profile
@@ -53,6 +54,20 @@ const register = async (req: Request, res: Response) => {
     }
 }
 
+const getCurrentUser = async (req: Request, res: Response) => {
+    try {
+        const { id, role } = req.user as { id: string, role: string };
+        const result = await registrationServices.getCurrentUser(id as string, role as UserRole);
+        res.status(200).json({ success: true, data: result });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
 export const registerController = {
-    register
+    register,
+    getCurrentUser
 }

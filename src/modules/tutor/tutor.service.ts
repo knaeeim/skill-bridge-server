@@ -1,5 +1,5 @@
 import { Availability, dayOfWeek, Subjects } from "../../generated/prisma/client";
-import { TutorProfileWhereInput } from "../../generated/prisma/models";
+import { TutorProfileWhereInput, UserOrderByWithRelationInput } from "../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
 interface tutorInfo {
@@ -11,7 +11,7 @@ interface tutorInfo {
     availabilities?: Availability[]
 }
 
-const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number }) => {
+const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string }) => {
     try {
         const andConditions: TutorProfileWhereInput[] = [];
 
@@ -39,17 +39,31 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
             })
         }
 
+        const orderbyConditions: UserOrderByWithRelationInput = {};
+
+        if (queries.sortOrder === 'asc') {
+            orderbyConditions.tutorProfile = {
+                hourlyRate: "asc"
+            }
+        }
+        else if (queries.sortOrder === "desc") {
+            orderbyConditions.tutorProfile = {
+                hourlyRate: "desc"
+            }
+        }
+
         return await prisma.user.findMany({
             where: {
                 status: "ACTIVE",
                 role: "TUTOR",
                 tutorProfile: {
                     AND: andConditions
-                }
+                },
             },
             include: {
                 tutorProfile: true
-            }
+            },
+            orderBy: orderbyConditions
         })
     } catch (error: unknown) {
         if (error instanceof Error) {

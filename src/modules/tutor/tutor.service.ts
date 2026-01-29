@@ -1,4 +1,5 @@
 import { Availability, dayOfWeek, Subjects } from "../../generated/prisma/client";
+import { TutorProfileWhereInput } from "../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
 interface tutorInfo {
@@ -10,12 +11,41 @@ interface tutorInfo {
     availabilities?: Availability[]
 }
 
-const getAllTutors = async () => {
+const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number }) => {
     try {
+        const andConditions: TutorProfileWhereInput[] = [];
+
+        if (queries.subject) {
+            andConditions.push({
+                subjects: {
+                    has: queries.subject
+                }
+            })
+        }
+
+        if (queries.experienceYears) {
+            andConditions.push({
+                experienceYears: {
+                    gte: Number(queries.experienceYears)
+                }
+            })
+        }
+
+        if (queries.hourlyRate) {
+            andConditions.push({
+                hourlyRate: {
+                    lte: Number(queries.hourlyRate)
+                }
+            })
+        }
+
         return await prisma.user.findMany({
             where: {
                 status: "ACTIVE",
-                role: "TUTOR"
+                role: "TUTOR",
+                tutorProfile: {
+                    AND: andConditions
+                }
             },
             include: {
                 tutorProfile: true

@@ -3,7 +3,8 @@ import { tutorServices } from "./tutor.service";
 
 const getAllTutor = async (req: Request, res: Response) => {
     try {
-        const result = await tutorServices.getAllTutors();
+        const queries = req.query;
+        const result = await tutorServices.getAllTutors(queries);
         res.status(200).json({ success: true, data: result });
     } catch (error: unknown) {
         if (error instanceof Error) {

@@ -3,7 +3,6 @@ import { registrationServices } from "./register.service";
 import { tutorServices } from "../tutor/tutor.service";
 import { UserRole } from "../../middleware/auth";
 import { studentService } from "../student/student.service";
-import { User } from "better-auth/types";
 
 interface StudentProfile {
     userId: string;

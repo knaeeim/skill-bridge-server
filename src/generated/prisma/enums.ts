@@ -34,3 +34,32 @@ export const BookingStatus = {
 } as const
 
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
+
+
+export const dayOfWeek = {
+  SUNDAY: 'SUNDAY',
+  MONDAY: 'MONDAY',
+  TUESDAY: 'TUESDAY',
+  WEDNESDAY: 'WEDNESDAY',
+  THURSDAY: 'THURSDAY',
+  FRIDAY: 'FRIDAY',
+  SATURDAY: 'SATURDAY'
+} as const
+
+export type dayOfWeek = (typeof dayOfWeek)[keyof typeof dayOfWeek]
+
+
+export const Subjects = {
+  MATH: 'MATH',
+  SCIENCE: 'SCIENCE',
+  ENGLISH: 'ENGLISH',
+  HISTORY: 'HISTORY',
+  COMPUTER_SCIENCE: 'COMPUTER_SCIENCE',
+  ART: 'ART',
+  MUSIC: 'MUSIC',
+  PHYSICS: 'PHYSICS',
+  CHEMISTRY: 'CHEMISTRY',
+  BIOLOGY: 'BIOLOGY'
+} as const
+
+export type Subjects = (typeof Subjects)[keyof typeof Subjects]

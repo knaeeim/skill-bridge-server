@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { registrationServices } from "./register.service";
-import { TutorServices } from "../tutor/tutor.service";
+import { tutorServices } from "../tutor/tutor.service";
 import { UserRole } from "../../middleware/auth";
 import { studentService } from "../student/student.service";
 
@@ -15,7 +15,7 @@ interface TutorProfile {
     experienceYears : number;
     hourlyRate : number;
     category : string[];
-    availability : string[]
+    availabilities : string[]
 }
 
 const register = async (req: Request, res: Response) => {
@@ -26,16 +26,13 @@ const register = async (req: Request, res: Response) => {
         if(!result){
             throw new Error("Registration failed");
         }
-
-        console.log(Profile);
         
         const userId = result.id; 
 
         if(userData.role === UserRole.TUTOR){
-            await TutorServices.createTutorProfile({
+            await tutorServices.createTutorProfile({
                 userId, 
-                experienceYears: Profile.experienceYears,
-                hourlyRate : Profile.hourlyRate
+                ...Profile
             })
         }
 

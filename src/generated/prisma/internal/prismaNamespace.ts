@@ -391,8 +391,6 @@ export const ModelName = {
   StudentProfile: 'StudentProfile',
   TutorProfile: 'TutorProfile',
   Availability: 'Availability',
-  Category: 'Category',
-  TutorCategory: 'TutorCategory',
   Booking: 'Booking',
   Review: 'Review'
 } as const
@@ -410,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "studentProfile" | "tutorProfile" | "availability" | "category" | "tutorCategory" | "booking" | "review"
+    modelProps: "user" | "session" | "account" | "verification" | "studentProfile" | "tutorProfile" | "availability" | "booking" | "review"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -932,154 +930,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Category: {
-      payload: Prisma.$CategoryPayload<ExtArgs>
-      fields: Prisma.CategoryFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.CategoryFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.CategoryFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        findFirst: {
-          args: Prisma.CategoryFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.CategoryFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        findMany: {
-          args: Prisma.CategoryFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
-        }
-        create: {
-          args: Prisma.CategoryCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        createMany: {
-          args: Prisma.CategoryCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.CategoryCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
-        }
-        delete: {
-          args: Prisma.CategoryDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        update: {
-          args: Prisma.CategoryUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        deleteMany: {
-          args: Prisma.CategoryDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.CategoryUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.CategoryUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
-        }
-        upsert: {
-          args: Prisma.CategoryUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        aggregate: {
-          args: Prisma.CategoryAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCategory>
-        }
-        groupBy: {
-          args: Prisma.CategoryGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CategoryGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.CategoryCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CategoryCountAggregateOutputType> | number
-        }
-      }
-    }
-    TutorCategory: {
-      payload: Prisma.$TutorCategoryPayload<ExtArgs>
-      fields: Prisma.TutorCategoryFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.TutorCategoryFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.TutorCategoryFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>
-        }
-        findFirst: {
-          args: Prisma.TutorCategoryFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.TutorCategoryFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>
-        }
-        findMany: {
-          args: Prisma.TutorCategoryFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>[]
-        }
-        create: {
-          args: Prisma.TutorCategoryCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>
-        }
-        createMany: {
-          args: Prisma.TutorCategoryCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.TutorCategoryCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>[]
-        }
-        delete: {
-          args: Prisma.TutorCategoryDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>
-        }
-        update: {
-          args: Prisma.TutorCategoryUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>
-        }
-        deleteMany: {
-          args: Prisma.TutorCategoryDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.TutorCategoryUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.TutorCategoryUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>[]
-        }
-        upsert: {
-          args: Prisma.TutorCategoryUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TutorCategoryPayload>
-        }
-        aggregate: {
-          args: Prisma.TutorCategoryAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTutorCategory>
-        }
-        groupBy: {
-          args: Prisma.TutorCategoryGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TutorCategoryGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.TutorCategoryCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TutorCategoryCountAggregateOutputType> | number
-        }
-      }
-    }
     Booking: {
       payload: Prisma.$BookingPayload<ExtArgs>
       fields: Prisma.BookingFieldRefs
@@ -1347,6 +1197,7 @@ export const TutorProfileScalarFieldEnum = {
   rating: 'rating',
   totalReviews: 'totalReviews',
   isApproved: 'isApproved',
+  subjects: 'subjects',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1366,28 +1217,11 @@ export const AvailabilityScalarFieldEnum = {
 export type AvailabilityScalarFieldEnum = (typeof AvailabilityScalarFieldEnum)[keyof typeof AvailabilityScalarFieldEnum]
 
 
-export const CategoryScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  isActive: 'isActive'
-} as const
-
-export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
-
-
-export const TutorCategoryScalarFieldEnum = {
-  tutorId: 'tutorId',
-  categoryId: 'categoryId'
-} as const
-
-export type TutorCategoryScalarFieldEnum = (typeof TutorCategoryScalarFieldEnum)[keyof typeof TutorCategoryScalarFieldEnum]
-
-
 export const BookingScalarFieldEnum = {
   id: 'id',
   studentId: 'studentId',
   tutorId: 'tutorId',
-  categoryId: 'categoryId',
+  subject: 'subject',
   date: 'date',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -1535,6 +1369,34 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
+ * Reference to a field of type 'Subjects[]'
+ */
+export type ListEnumSubjectsFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Subjects[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Subjects'
+ */
+export type EnumSubjectsFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Subjects'>
+    
+
+
+/**
+ * Reference to a field of type 'dayOfWeek[]'
+ */
+export type ListEnumdayOfWeekFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'dayOfWeek[]'>
+    
+
+
+/**
+ * Reference to a field of type 'dayOfWeek'
+ */
+export type EnumdayOfWeekFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'dayOfWeek'>
+    
+
+
+/**
  * Reference to a field of type 'BookingStatus'
  */
 export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
@@ -1649,8 +1511,6 @@ export type GlobalOmitConfig = {
   studentProfile?: Prisma.StudentProfileOmit
   tutorProfile?: Prisma.TutorProfileOmit
   availability?: Prisma.AvailabilityOmit
-  category?: Prisma.CategoryOmit
-  tutorCategory?: Prisma.TutorCategoryOmit
   booking?: Prisma.BookingOmit
   review?: Prisma.ReviewOmit
 }

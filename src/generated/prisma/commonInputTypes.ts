@@ -236,11 +236,28 @@ export type FloatWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatFilter<$PrismaModel>
 }
 
+export type EnumSubjectsFilter<$PrismaModel = never> = {
+  equals?: $Enums.Subjects | Prisma.EnumSubjectsFieldRefInput<$PrismaModel>
+  in?: $Enums.Subjects[] | Prisma.ListEnumSubjectsFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Subjects[] | Prisma.ListEnumSubjectsFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubjectsFilter<$PrismaModel> | $Enums.Subjects
+}
+
 export type EnumBookingStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.BookingStatus | Prisma.EnumBookingStatusFieldRefInput<$PrismaModel>
   in?: $Enums.BookingStatus[] | Prisma.ListEnumBookingStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.BookingStatus[] | Prisma.ListEnumBookingStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumBookingStatusFilter<$PrismaModel> | $Enums.BookingStatus
+}
+
+export type EnumSubjectsWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Subjects | Prisma.EnumSubjectsFieldRefInput<$PrismaModel>
+  in?: $Enums.Subjects[] | Prisma.ListEnumSubjectsFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Subjects[] | Prisma.ListEnumSubjectsFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubjectsWithAggregatesFilter<$PrismaModel> | $Enums.Subjects
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSubjectsFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSubjectsFilter<$PrismaModel>
 }
 
 export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -477,11 +494,28 @@ export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatFilter<$PrismaModel>
 }
 
+export type NestedEnumSubjectsFilter<$PrismaModel = never> = {
+  equals?: $Enums.Subjects | Prisma.EnumSubjectsFieldRefInput<$PrismaModel>
+  in?: $Enums.Subjects[] | Prisma.ListEnumSubjectsFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Subjects[] | Prisma.ListEnumSubjectsFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubjectsFilter<$PrismaModel> | $Enums.Subjects
+}
+
 export type NestedEnumBookingStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.BookingStatus | Prisma.EnumBookingStatusFieldRefInput<$PrismaModel>
   in?: $Enums.BookingStatus[] | Prisma.ListEnumBookingStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.BookingStatus[] | Prisma.ListEnumBookingStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumBookingStatusFilter<$PrismaModel> | $Enums.BookingStatus
+}
+
+export type NestedEnumSubjectsWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Subjects | Prisma.EnumSubjectsFieldRefInput<$PrismaModel>
+  in?: $Enums.Subjects[] | Prisma.ListEnumSubjectsFieldRefInput<$PrismaModel>
+  notIn?: $Enums.Subjects[] | Prisma.ListEnumSubjectsFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSubjectsWithAggregatesFilter<$PrismaModel> | $Enums.Subjects
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSubjectsFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSubjectsFilter<$PrismaModel>
 }
 
 export type NestedEnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {

@@ -2,10 +2,10 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import { auth } from './lib/auth';
 import { toNodeHandler } from "better-auth/node"
-import { TutorServices } from './modules/tutor/tutor.service';
 import { tutorRouter } from './modules/tutor/tutor.routes';
 import { studentRoutes } from './modules/student/student.routes';
 import { registerRouter } from './modules/register/register.routes';
+import { adminRouter } from './modules/admin/admin.routes';
 
 const app: Application = express();
 app.use(express.json());
@@ -26,6 +26,8 @@ app.use('/user', registerRouter)
 app.use("/tutor", tutorRouter);
 
 app.use("/student", studentRoutes);
+
+app.use("/admin", adminRouter)
 
 
 export default app;

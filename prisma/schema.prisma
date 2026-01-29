@@ -26,6 +26,29 @@ enum BookingStatus {
   CANCELLED
 }
 
+enum dayOfWeek {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum Subjects {
+  MATH
+  SCIENCE
+  ENGLISH
+  HISTORY
+  COMPUTER_SCIENCE
+  ART
+  MUSIC
+  PHYSICS
+  CHEMISTRY
+  BIOLOGY
+}
+
 // ===== AUTH MODELS =====
 model User {
   id            String    @id
@@ -38,14 +61,18 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  role              Role
-  phone             String?
-  status            UserStatus?     @default(ACTIVE)
-  studentProfile    StudentProfile?
-  tutorProfile      TutorProfile?
-  reviews           Review[]
-  bookingsAsStudent Booking[]       @relation("StudentBookings")
-  bookingsAsTutor   Booking[]       @relation("TutorBookings")
+  role   Role
+  phone  String?
+  status UserStatus? @default(ACTIVE)
+
+  // Profiles 
+  studentProfile StudentProfile?
+  tutorProfile   TutorProfile?
+  reviews        Review[]
+
+  // Bookings
+  bookingsAsStudent Booking[] @relation("StudentBookings")
+  bookingsAsTutor   Booking[] @relation("TutorBookings")
 
   @@unique([email])
   @@map("user")
@@ -103,7 +130,7 @@ model Verification {
 model StudentProfile {
   id     String  @id @default(uuid())
   userId String  @unique
-  user   User    @relation(fields: [userId], references: [id])
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   bio    String?
 
   createdAt DateTime @default(now())
@@ -113,7 +140,7 @@ model StudentProfile {
 model TutorProfile {
   id              String  @id @default(uuid())
   userId          String  @unique
-  user            User    @relation(fields: [userId], references: [id])
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   bio             String?
   experienceYears Int
   hourlyRate      Int
@@ -121,7 +148,7 @@ model TutorProfile {
   totalReviews    Int     @default(0)
   isApproved      Boolean @default(false)
 
-  categories     TutorCategory[]
+  subjects       Subjects[]
   availabilities Availability[]
   reviews        Review[]
 
@@ -132,32 +159,32 @@ model TutorProfile {
 model Availability {
   id        String       @id @default(uuid())
   tutorId   String
-  tutor     TutorProfile @relation(fields: [tutorId], references: [id])
-  dayOfWeek Int
+  tutor     TutorProfile @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  dayOfWeek dayOfWeek[]
   startTime String
   endTime   String
   isActive  Boolean      @default(true)
 }
 
 // ===== CATEGORY MODELS =====
-model Category {
-  id       String  @id @default(uuid())
-  name     String
-  isActive Boolean @default(true)
+// model Category {
+//   id       String  @id @default(uuid())
+//   name     String
+//   isActive Boolean @default(true)
 
-  tutors   TutorCategory[]
-  bookings Booking[]
-}
+//   // tutors   TutorCategory[]
+//   bookings Booking[]
+// }
 
-model TutorCategory {
-  tutorId    String
-  categoryId String
+// model TutorCategory {
+//   tutorId    String
+//   categoryId String
 
-  tutor    TutorProfile @relation(fields: [tutorId], references: [id])
-  category Category     @relation(fields: [categoryId], references: [id])
+//   tutor    TutorProfile @relation(fields: [tutorId], references: [id])
+//   category Category     @relation(fields: [categoryId], references: [id])
 
-  @@id([tutorId, categoryId])
-}
+//   @@id([tutorId, categoryId])
+// }
 
 // ===== BOOKING & REVIEW MODELS =====
 model Booking {
@@ -165,11 +192,10 @@ model Booking {
   studentId String
   tutorId   String
 
-  student User @relation("StudentBookings", fields: [studentId], references: [id])
-  tutor   User @relation("TutorBookings", fields: [tutorId], references: [id])
+  student User @relation("StudentBookings", fields: [studentId], references: [id], onDelete: Cascade)
+  tutor   User @relation("TutorBookings", fields: [tutorId], references: [id], onDelete: Cascade)
 
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+  subject Subjects
 
   date      DateTime
   startTime String
@@ -192,8 +218,8 @@ model Review {
   studentId String
   tutorId   String
 
-  student User         @relation(fields: [studentId], references: [id])
-  tutor   TutorProfile @relation(fields: [tutorId], references: [id])
+  student User         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  tutor   TutorProfile @relation(fields: [tutorId], references: [id], onDelete: Cascade)
 
   rating  Int
   comment String?

@@ -38,11 +38,27 @@ const getAllBookings = async () => {
     try {
         const result = await prisma.booking.findMany({})
         return result;
-    } catch (error : unknown) {
-        if(error instanceof Error){
+    } catch (error: unknown) {
+        if (error instanceof Error) {
             throw new Error(error.message);
         }
         throw new Error("Fetching all bookings failed");
+    }
+}
+
+const createCategory = async (categoryData: { name: string, description?: string }) => {
+    try {
+        const result = await prisma.category.create({
+            data: {
+                ...categoryData
+            }
+        })
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Creating category failed");
     }
 }
 
@@ -50,4 +66,5 @@ export const adminServices = {
     getAllUsers,
     manageUserStatus,
     getAllBookings,
+    createCategory
 }

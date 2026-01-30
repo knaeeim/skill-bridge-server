@@ -1,4 +1,4 @@
-import { Availability, dayOfWeek, Subjects } from "../../generated/prisma/client";
+import { Availability, Category, dayOfWeek, Subjects } from "../../generated/prisma/client";
 import { TutorProfileWhereInput, UserOrderByWithRelationInput } from "../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
@@ -9,6 +9,7 @@ interface tutorInfo {
     bio?: string
     subjects?: Subjects[],
     availabilities?: Availability[]
+    category: string[]
 }
 
 const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string }) => {
@@ -75,19 +76,22 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
 
 const createTutorProfile = async (tutorData: tutorInfo) => {
     try {
-        const { availabilities, ...rest } = tutorData;
+        const { category, availabilities, ...rest } = tutorData;
         const result = await prisma.tutorProfile.create({
             data: {
                 ...rest,
+                ...(category && {
+                    category: {
+                        connect: category.map((catId: string) => ({ id: catId }))
+                    }
+                }),
                 ...(availabilities && {
                     availabilities: {
-                        deleteMany: {},
                         create: availabilities.map((slot: any) => ({
                             dayOfWeek: slot.dayOfWeek,
                             startTime: slot.startTime,
                             endTime: slot.endTime
                         }))
-
                     }
                 })
             }
@@ -103,11 +107,17 @@ const createTutorProfile = async (tutorData: tutorInfo) => {
 
 const updateTutorProfile = async (tutorId: string, tutorData: tutorInfo) => {
     try {
-        const { availabilities, ...rest } = tutorData;
+        const { category, availabilities, ...rest } = tutorData;
+        console.log(category);
         const result = await prisma.tutorProfile.update({
             where: { id: tutorId },
             data: {
                 ...rest,
+                ...(category && {
+                    category: {
+                        set: category.map((catId: string) => ({ id: catId }))
+                    }
+                }),
                 ...(availabilities && {
                     availabilities: {
                         deleteMany: {},
@@ -121,7 +131,18 @@ const updateTutorProfile = async (tutorId: string, tutorData: tutorInfo) => {
                 })
             },
             include: {
-                availabilities: true
+                availabilities: {
+                    select : {
+                        dayOfWeek: true,
+                        startTime: true,
+                        endTime: true
+                    }
+                }, 
+                category :{
+                    select : {
+                        name : true
+                    }
+                }
             }
         })
         return result;

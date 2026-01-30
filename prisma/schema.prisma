@@ -148,6 +148,7 @@ model TutorProfile {
   totalReviews    Int     @default(0)
   isApproved      Boolean @default(false)
 
+  category       Category[]
   subjects       Subjects[]
   availabilities Availability[]
   reviews        Review[]
@@ -167,11 +168,15 @@ model Availability {
 }
 
 // ===== CATEGORY MODELS =====
+// Category model will be like University Teacher, College Teacher, High School Teacher, Primary School Teacher and English Medium Teacher, Bangla Medium Teacher etc.
 model Category {
-  id       String  @id @default(uuid())
-  name     String
-  isActive Boolean @default(true)
-
+  id            String         @id @default(uuid())
+  name          String
+  description   String?
+  TutorProfiles TutorProfile[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   // tutors   TutorCategory[] 
 }
 

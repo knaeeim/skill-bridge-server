@@ -9,4 +9,6 @@ router.put("/manage-user/:userId", adminController.manageUserStatus);
 
 router.get("/all-bookings", adminController.getAllBookings);
 
+router.post("/create-category", adminController.createCategory);
+
 export const adminRouter = router

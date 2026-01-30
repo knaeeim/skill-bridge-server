@@ -5,6 +5,9 @@ const createStudentProfile = async (studentInfo: { userId: string, bio: string }
         data: {
             userId: studentInfo.userId,
             bio: studentInfo.bio
+        }, 
+        include : {
+            user: true
         }
     })
 

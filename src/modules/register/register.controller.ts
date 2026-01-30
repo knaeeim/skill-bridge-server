@@ -29,21 +29,23 @@ const register = async (req: Request, res: Response) => {
 
         const userId = result.id;
 
+        let response = null;
+
         if (userData.role === UserRole.TUTOR) {
-            await tutorServices.createTutorProfile({
+            response = await tutorServices.createTutorProfile({
                 userId,
                 ...Profile
             })
         }
 
         if (userData.role === UserRole.STUDENT) {
-            await studentService.createStudentProfile({
+            response = await studentService.createStudentProfile({
                 userId,
                 ...Profile
             })
         }
 
-        res.status(201).json({ message: "Registration successful", user: result });
+        res.status(201).json({ message: "Registration successful", user: response });
 
     } catch (error: unknown) {
         if (error instanceof Error) {

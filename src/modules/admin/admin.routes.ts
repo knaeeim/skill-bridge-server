@@ -7,8 +7,8 @@ router.get("/all-users", adminController.getAllUsers);
 
 router.put("/manage-user/:userId", adminController.manageUserStatus);
 
-router.get("/all-bookings", adminController.getAllBookings);
-
 router.post("/create-category", adminController.createCategory);
+
+router.get("/all-categories", adminController.getAllCategories);
 
 export const adminRouter = router

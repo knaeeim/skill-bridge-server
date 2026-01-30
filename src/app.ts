@@ -6,6 +6,7 @@ import { tutorRouter } from './modules/tutor/tutor.routes';
 import { studentRoutes } from './modules/student/student.routes';
 import { registerRouter } from './modules/register/register.routes';
 import { adminRouter } from './modules/admin/admin.routes';
+import { bookingRouter } from './modules/booking/booking.routes';
 
 const app: Application = express();
 app.use(express.json());
@@ -28,6 +29,8 @@ app.use("/tutor", tutorRouter);
 app.use("/student", studentRoutes);
 
 app.use("/admin", adminRouter)
+
+app.use("/booking", bookingRouter);
 
 
 export default app;

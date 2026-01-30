@@ -7,6 +7,7 @@ import { studentRoutes } from './modules/student/student.routes';
 import { registerRouter } from './modules/register/register.routes';
 import { adminRouter } from './modules/admin/admin.routes';
 import { bookingRouter } from './modules/booking/booking.routes';
+import { reviewRouter } from './modules/review/review.routes';
 
 const app: Application = express();
 app.use(express.json());
@@ -31,6 +32,8 @@ app.use("/student", studentRoutes);
 app.use("/admin", adminRouter)
 
 app.use("/booking", bookingRouter);
+
+app.use("/review", reviewRouter);
 
 
 export default app;

@@ -194,10 +194,13 @@ const seeRatingAndReviews = async (tutorId: string) => {
 const getTutorProfile = async (tutorId: string) => {
     try {
         const result = await prisma.tutorProfile.findUnique({
-            where: { userId: tutorId },
+            where: { 
+                userId: tutorId,
+            },
             include: {
                 user: true
-            }
+            }, 
+
         })
         return result;
     } catch (error: unknown) {

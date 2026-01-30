@@ -71,8 +71,25 @@ const getUsersBookings = async (userId: string, role: UserRole) => {
     }
 }
 
+const getBookingDetails = async (bookingId : string) => {
+    try {
+        const result = await prisma.booking.findUnique({
+            where : {
+                id : bookingId
+            }
+        })
+        return result;
+    } catch (error : unknown) {
+        if(error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Fetching booking details failed");
+    }
+}
+
 export const bookingServices = {
     getAllBookings,
     createBooking,
-    getUsersBookings
+    getUsersBookings, 
+    getBookingDetails
 }

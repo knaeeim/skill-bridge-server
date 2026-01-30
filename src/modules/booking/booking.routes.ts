@@ -10,4 +10,6 @@ router.post("/create-booking", bookingController.createBooking);
 
 router.get("/user-bookings", auth(UserRole.STUDENT, UserRole.TUTOR), bookingController.getUsersBookings);
 
+router.get("/booking-details/:bookingId", bookingController.getBookingDetails)
+
 export const bookingRouter = router;

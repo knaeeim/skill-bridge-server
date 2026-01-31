@@ -1,5 +1,7 @@
+import { number } from "better-auth/*";
 import { Availability, Category, dayOfWeek, Subjects } from "../../generated/prisma/client";
 import { TutorProfileWhereInput, UserOrderByWithRelationInput } from "../../generated/prisma/models";
+import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 import { prisma } from "../../lib/prisma";
 
 interface tutorInfo {
@@ -12,9 +14,11 @@ interface tutorInfo {
     category?: string[]
 }
 
-const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string, page?: number, limit?: number, sortBy?: string }) => {
+const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string, page?: number, limit?: number, sortBy?: string, isFeatured? : string }) => {
     try {
         const andConditions: TutorProfileWhereInput[] = [];
+
+        const {page, skip, limit, sortBy, sortOrder} = paginationSortingHelper(queries)
 
         if (queries.subject) {
             andConditions.push({
@@ -53,7 +57,24 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
             }
         }
 
+        if(sortBy){
+            orderbyConditions.tutorProfile = {
+                [sortBy] : sortOrder
+            }
+        }
+
+        if(queries.isFeatured){
+            const isFeaturedBool = queries.isFeatured === 'true' ? true : false;
+            andConditions.push({
+                isFeatured : isFeaturedBool
+            })
+        }
+
+        console.log(queries.isFeatured);
+
         return await prisma.user.findMany({
+            skip, 
+            take: limit,
             where: {
                 status: "ACTIVE",
                 role: "TUTOR",

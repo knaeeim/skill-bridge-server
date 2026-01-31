@@ -1272,6 +1272,7 @@ export const TutorProfileScalarFieldEnum = {
   rating: 'rating',
   totalReviews: 'totalReviews',
   isApproved: 'isApproved',
+  isFeatured: 'isFeatured',
   subjects: 'subjects',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

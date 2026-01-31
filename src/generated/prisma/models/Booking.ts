@@ -288,6 +288,7 @@ export type BookingOrderByWithRelationInput = {
 
 export type BookingWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  studentId_tutorId_date_startTime?: Prisma.BookingStudentIdTutorIdDateStartTimeCompoundUniqueInput
   AND?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
   OR?: Prisma.BookingWhereInput[]
   NOT?: Prisma.BookingWhereInput | Prisma.BookingWhereInput[]
@@ -304,7 +305,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   student?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   tutor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
-}, "id">
+}, "id" | "studentId_tutorId_date_startTime">
 
 export type BookingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -450,6 +451,13 @@ export type BookingListRelationFilter = {
 
 export type BookingOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type BookingStudentIdTutorIdDateStartTimeCompoundUniqueInput = {
+  studentId: string
+  tutorId: string
+  date: Date | string
+  startTime: string
 }
 
 export type BookingCountOrderByAggregateInput = {

@@ -49,6 +49,7 @@ export type TutorProfileMinAggregateOutputType = {
   rating: number | null
   totalReviews: number | null
   isApproved: boolean | null
+  isFeatured: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +63,7 @@ export type TutorProfileMaxAggregateOutputType = {
   rating: number | null
   totalReviews: number | null
   isApproved: boolean | null
+  isFeatured: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -75,6 +77,7 @@ export type TutorProfileCountAggregateOutputType = {
   rating: number
   totalReviews: number
   isApproved: number
+  isFeatured: number
   subjects: number
   createdAt: number
   updatedAt: number
@@ -105,6 +108,7 @@ export type TutorProfileMinAggregateInputType = {
   rating?: true
   totalReviews?: true
   isApproved?: true
+  isFeatured?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -118,6 +122,7 @@ export type TutorProfileMaxAggregateInputType = {
   rating?: true
   totalReviews?: true
   isApproved?: true
+  isFeatured?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -131,6 +136,7 @@ export type TutorProfileCountAggregateInputType = {
   rating?: true
   totalReviews?: true
   isApproved?: true
+  isFeatured?: true
   subjects?: true
   createdAt?: true
   updatedAt?: true
@@ -232,6 +238,7 @@ export type TutorProfileGroupByOutputType = {
   rating: number
   totalReviews: number
   isApproved: boolean
+  isFeatured: boolean
   subjects: $Enums.Subjects[]
   createdAt: Date
   updatedAt: Date
@@ -269,6 +276,7 @@ export type TutorProfileWhereInput = {
   rating?: Prisma.FloatFilter<"TutorProfile"> | number
   totalReviews?: Prisma.IntFilter<"TutorProfile"> | number
   isApproved?: Prisma.BoolFilter<"TutorProfile"> | boolean
+  isFeatured?: Prisma.BoolFilter<"TutorProfile"> | boolean
   subjects?: Prisma.EnumSubjectsNullableListFilter<"TutorProfile">
   createdAt?: Prisma.DateTimeFilter<"TutorProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TutorProfile"> | Date | string
@@ -287,6 +295,7 @@ export type TutorProfileOrderByWithRelationInput = {
   rating?: Prisma.SortOrder
   totalReviews?: Prisma.SortOrder
   isApproved?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   subjects?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -308,6 +317,7 @@ export type TutorProfileWhereUniqueInput = Prisma.AtLeast<{
   rating?: Prisma.FloatFilter<"TutorProfile"> | number
   totalReviews?: Prisma.IntFilter<"TutorProfile"> | number
   isApproved?: Prisma.BoolFilter<"TutorProfile"> | boolean
+  isFeatured?: Prisma.BoolFilter<"TutorProfile"> | boolean
   subjects?: Prisma.EnumSubjectsNullableListFilter<"TutorProfile">
   createdAt?: Prisma.DateTimeFilter<"TutorProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TutorProfile"> | Date | string
@@ -326,6 +336,7 @@ export type TutorProfileOrderByWithAggregationInput = {
   rating?: Prisma.SortOrder
   totalReviews?: Prisma.SortOrder
   isApproved?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   subjects?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -348,6 +359,7 @@ export type TutorProfileScalarWhereWithAggregatesInput = {
   rating?: Prisma.FloatWithAggregatesFilter<"TutorProfile"> | number
   totalReviews?: Prisma.IntWithAggregatesFilter<"TutorProfile"> | number
   isApproved?: Prisma.BoolWithAggregatesFilter<"TutorProfile"> | boolean
+  isFeatured?: Prisma.BoolWithAggregatesFilter<"TutorProfile"> | boolean
   subjects?: Prisma.EnumSubjectsNullableListFilter<"TutorProfile">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TutorProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TutorProfile"> | Date | string
@@ -361,6 +373,7 @@ export type TutorProfileCreateInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -379,6 +392,7 @@ export type TutorProfileUncheckedCreateInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -395,6 +409,7 @@ export type TutorProfileUpdateInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -413,6 +428,7 @@ export type TutorProfileUncheckedUpdateInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -430,6 +446,7 @@ export type TutorProfileCreateManyInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -443,6 +460,7 @@ export type TutorProfileUpdateManyMutationInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -457,6 +475,7 @@ export type TutorProfileUncheckedUpdateManyInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -484,6 +503,7 @@ export type TutorProfileCountOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   totalReviews?: Prisma.SortOrder
   isApproved?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   subjects?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -505,6 +525,7 @@ export type TutorProfileMaxOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   totalReviews?: Prisma.SortOrder
   isApproved?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -518,6 +539,7 @@ export type TutorProfileMinOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   totalReviews?: Prisma.SortOrder
   isApproved?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -675,6 +697,7 @@ export type TutorProfileCreateWithoutUserInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -691,6 +714,7 @@ export type TutorProfileUncheckedCreateWithoutUserInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -723,6 +747,7 @@ export type TutorProfileUpdateWithoutUserInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -739,6 +764,7 @@ export type TutorProfileUncheckedUpdateWithoutUserInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -755,6 +781,7 @@ export type TutorProfileCreateWithoutAvailabilitiesInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -772,6 +799,7 @@ export type TutorProfileUncheckedCreateWithoutAvailabilitiesInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -803,6 +831,7 @@ export type TutorProfileUpdateWithoutAvailabilitiesInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -820,6 +849,7 @@ export type TutorProfileUncheckedUpdateWithoutAvailabilitiesInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -835,6 +865,7 @@ export type TutorProfileCreateWithoutCategoryInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -852,6 +883,7 @@ export type TutorProfileUncheckedCreateWithoutCategoryInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -892,6 +924,7 @@ export type TutorProfileScalarWhereInput = {
   rating?: Prisma.FloatFilter<"TutorProfile"> | number
   totalReviews?: Prisma.IntFilter<"TutorProfile"> | number
   isApproved?: Prisma.BoolFilter<"TutorProfile"> | boolean
+  isFeatured?: Prisma.BoolFilter<"TutorProfile"> | boolean
   subjects?: Prisma.EnumSubjectsNullableListFilter<"TutorProfile">
   createdAt?: Prisma.DateTimeFilter<"TutorProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TutorProfile"> | Date | string
@@ -905,6 +938,7 @@ export type TutorProfileCreateWithoutReviewsInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -922,6 +956,7 @@ export type TutorProfileUncheckedCreateWithoutReviewsInput = {
   rating?: number
   totalReviews?: number
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: Prisma.TutorProfileCreatesubjectsInput | $Enums.Subjects[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -953,6 +988,7 @@ export type TutorProfileUpdateWithoutReviewsInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -970,6 +1006,7 @@ export type TutorProfileUncheckedUpdateWithoutReviewsInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -985,6 +1022,7 @@ export type TutorProfileUpdateWithoutCategoryInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1002,6 +1040,7 @@ export type TutorProfileUncheckedUpdateWithoutCategoryInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1018,6 +1057,7 @@ export type TutorProfileUncheckedUpdateManyWithoutCategoryInput = {
   rating?: Prisma.FloatFieldUpdateOperationsInput | number
   totalReviews?: Prisma.IntFieldUpdateOperationsInput | number
   isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   subjects?: Prisma.TutorProfileUpdatesubjectsInput | $Enums.Subjects[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1081,6 +1121,7 @@ export type TutorProfileSelect<ExtArgs extends runtime.Types.Extensions.Internal
   rating?: boolean
   totalReviews?: boolean
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1100,6 +1141,7 @@ export type TutorProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   rating?: boolean
   totalReviews?: boolean
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1115,6 +1157,7 @@ export type TutorProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   rating?: boolean
   totalReviews?: boolean
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1130,12 +1173,13 @@ export type TutorProfileSelectScalar = {
   rating?: boolean
   totalReviews?: boolean
   isApproved?: boolean
+  isFeatured?: boolean
   subjects?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TutorProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "bio" | "experienceYears" | "hourlyRate" | "rating" | "totalReviews" | "isApproved" | "subjects" | "createdAt" | "updatedAt", ExtArgs["result"]["tutorProfile"]>
+export type TutorProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "bio" | "experienceYears" | "hourlyRate" | "rating" | "totalReviews" | "isApproved" | "isFeatured" | "subjects" | "createdAt" | "updatedAt", ExtArgs["result"]["tutorProfile"]>
 export type TutorProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.TutorProfile$categoryArgs<ExtArgs>
@@ -1167,6 +1211,7 @@ export type $TutorProfilePayload<ExtArgs extends runtime.Types.Extensions.Intern
     rating: number
     totalReviews: number
     isApproved: boolean
+    isFeatured: boolean
     subjects: $Enums.Subjects[]
     createdAt: Date
     updatedAt: Date
@@ -1605,6 +1650,7 @@ export interface TutorProfileFieldRefs {
   readonly rating: Prisma.FieldRef<"TutorProfile", 'Float'>
   readonly totalReviews: Prisma.FieldRef<"TutorProfile", 'Int'>
   readonly isApproved: Prisma.FieldRef<"TutorProfile", 'Boolean'>
+  readonly isFeatured: Prisma.FieldRef<"TutorProfile", 'Boolean'>
   readonly subjects: Prisma.FieldRef<"TutorProfile", 'Subjects[]'>
   readonly createdAt: Prisma.FieldRef<"TutorProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TutorProfile", 'DateTime'>

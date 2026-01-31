@@ -9,10 +9,10 @@ interface tutorInfo {
     bio?: string
     subjects?: Subjects[],
     availabilities?: Availability[]
-    category: string[]
+    category?: string[]
 }
 
-const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string }) => {
+const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string, page?: number, limit?: number, sortBy?: string }) => {
     try {
         const andConditions: TutorProfileWhereInput[] = [];
 
@@ -94,6 +94,9 @@ const createTutorProfile = async (tutorData: tutorInfo) => {
                         }))
                     }
                 })
+            }, 
+            include : {
+                user : true
             }
         })
         return result;
@@ -132,15 +135,15 @@ const updateTutorProfile = async (tutorId: string, tutorData: tutorInfo) => {
             },
             include: {
                 availabilities: {
-                    select : {
+                    select: {
                         dayOfWeek: true,
                         startTime: true,
                         endTime: true
                     }
-                }, 
-                category :{
-                    select : {
-                        name : true
+                },
+                category: {
+                    select: {
+                        name: true
                     }
                 }
             }
@@ -194,12 +197,12 @@ const seeRatingAndReviews = async (tutorId: string) => {
 const getTutorProfile = async (tutorId: string) => {
     try {
         const result = await prisma.tutorProfile.findUnique({
-            where: { 
+            where: {
                 userId: tutorId,
             },
             include: {
                 user: true
-            }, 
+            },
 
         })
         return result;

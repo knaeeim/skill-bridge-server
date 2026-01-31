@@ -4,46 +4,10 @@ import { tutorServices } from "../tutor/tutor.service";
 import { UserRole } from "../../middleware/auth";
 import { studentService } from "../student/student.service";
 
-interface StudentProfile {
-    userId: string;
-    bio?: string[];
-}
-
-interface TutorProfile {
-    userId: string;
-    bio?: string[];
-    experienceYears: number;
-    hourlyRate: number;
-    category: string[];
-    availabilities: string[]
-}
-
 const register = async (req: Request, res: Response) => {
     try {
-        const { Profile, ...userData } = req.body;
-        const result = await registrationServices.register({ email: userData.email, password: userData.password, name: userData.name, role: userData.role });
-
-        if (!result) {
-            throw new Error("Registration failed");
-        }
-
-        const userId = result.id;
-
-        let response = null;
-
-        if (userData.role === UserRole.TUTOR) {
-            response = await tutorServices.createTutorProfile({
-                userId,
-                ...Profile
-            })
-        }
-
-        if (userData.role === UserRole.STUDENT) {
-            response = await studentService.createStudentProfile({
-                userId,
-                ...Profile
-            })
-        }
+        const userData = req.body;
+        const response = await registrationServices.register(userData);
 
         res.status(201).json({ message: "Registration successful", user: response });
 

@@ -147,6 +147,7 @@ model TutorProfile {
   rating          Float   @default(0)
   totalReviews    Int     @default(0)
   isApproved      Boolean @default(false)
+  isFeatured      Boolean @default(false)
 
   category       Category[]
   subjects       Subjects[]
@@ -174,7 +175,7 @@ model Category {
   name          String
   description   String?
   TutorProfiles TutorProfile[]
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   // tutors   TutorCategory[] 
@@ -219,7 +220,7 @@ model Review {
   id String @id @default(uuid())
 
   bookingId String  @unique
-  booking   Booking @relation(fields: [bookingId], references: [id])
+  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 
   studentId String
   tutorId   String

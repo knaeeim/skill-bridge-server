@@ -1,12 +1,12 @@
 import { prisma } from "../../lib/prisma"
 
-const createStudentProfile = async (studentInfo: { userId: string, bio: string }) => {
+const createStudentProfile = async (studentInfo: { userId: string, bio?: string }) => {
     const result = await prisma.studentProfile.create({
         data: {
             userId: studentInfo.userId,
-            bio: studentInfo.bio
-        }, 
-        include : {
+            bio: studentInfo.bio ? studentInfo.bio : ""
+        },
+        include: {
             user: true
         }
     })

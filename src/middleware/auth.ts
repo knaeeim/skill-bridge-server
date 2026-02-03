@@ -28,7 +28,7 @@ const auth = (...roles: UserRole[]) => {
             });
 
             if (!session) {
-                return res.status(401).json({ success: false, message: "You are not authenticated, You neet to login First" })
+                return res.status(401).json({ success: false, message: "You are not authenticated, You need to login First" })
             }
 
             req.user = {

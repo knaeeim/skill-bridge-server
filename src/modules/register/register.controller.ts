@@ -2,14 +2,13 @@ import { Request, Response } from "express";
 import { registrationServices } from "./register.service";
 import { tutorServices } from "../tutor/tutor.service";
 import { UserRole } from "../../middleware/auth";
-import { studentService } from "../student/student.service";
 
 const register = async (req: Request, res: Response) => {
     try {
         const userData = req.body;
         const response = await registrationServices.register(userData);
 
-        res.status(201).json({ message: "Registration successful", user: response });
+        res.status(201).json({ message: "Registration successful", data: response });
 
     } catch (error: unknown) {
         if (error instanceof Error) {

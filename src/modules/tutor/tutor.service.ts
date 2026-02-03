@@ -1,4 +1,3 @@
-import { number } from "better-auth/*";
 import { Availability, Category, dayOfWeek, Subjects } from "../../generated/prisma/client";
 import { TutorProfileWhereInput, UserOrderByWithRelationInput } from "../../generated/prisma/models";
 import paginationSortingHelper from "../../helpers/paginationSortingHelper";
@@ -14,11 +13,11 @@ interface tutorInfo {
     category?: string[]
 }
 
-const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string, page?: number, limit?: number, sortBy?: string, isFeatured? : string }) => {
+const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string, page?: number, limit?: number, sortBy?: string, isFeatured?: string }) => {
     try {
         const andConditions: TutorProfileWhereInput[] = [];
 
-        const {page, skip, limit, sortBy, sortOrder} = paginationSortingHelper(queries)
+        const { page, skip, limit, sortBy, sortOrder } = paginationSortingHelper(queries)
 
         if (queries.subject) {
             andConditions.push({
@@ -57,23 +56,23 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
             }
         }
 
-        if(sortBy){
+        if (sortBy) {
             orderbyConditions.tutorProfile = {
-                [sortBy] : sortOrder
+                [sortBy]: sortOrder
             }
         }
 
-        if(queries.isFeatured){
+        if (queries.isFeatured) {
             const isFeaturedBool = queries.isFeatured === 'true' ? true : false;
             andConditions.push({
-                isFeatured : isFeaturedBool
+                isFeatured: isFeaturedBool
             })
         }
 
         console.log(queries.isFeatured);
 
         return await prisma.user.findMany({
-            skip, 
+            skip,
             take: limit,
             where: {
                 status: "ACTIVE",
@@ -98,6 +97,23 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
 const createTutorProfile = async (tutorData: tutorInfo) => {
     try {
         const { category, availabilities, ...rest } = tutorData;
+
+        const formattedAvailabilities = [];
+
+        console.log("availabilities ---- ", availabilities);
+
+        if (availabilities && Array.isArray(availabilities)) {
+            for (const slot of availabilities) {
+                if (slot.dayOfWeek && Array.isArray(slot.dayOfWeek)) {
+                    formattedAvailabilities.push({
+                        dayOfWeek: slot.dayOfWeek,
+                        startTime: slot.startTime,
+                        endTime: slot.endTime
+                    })
+                }
+            }
+        }
+
         const result = await prisma.tutorProfile.create({
             data: {
                 ...rest,
@@ -106,18 +122,17 @@ const createTutorProfile = async (tutorData: tutorInfo) => {
                         connect: category.map((catId: string) => ({ id: catId }))
                     }
                 }),
-                ...(availabilities && {
+                ...(formattedAvailabilities.length > 0 && {
                     availabilities: {
-                        create: availabilities.map((slot: any) => ({
-                            dayOfWeek: slot.dayOfWeek,
-                            startTime: slot.startTime,
-                            endTime: slot.endTime
-                        }))
+                        create: formattedAvailabilities
                     }
                 })
-            }, 
-            include : {
-                user : true
+            },
+            include: {
+                user: true,
+                availabilities: true,
+                category: true,
+                reviews: true
             }
         })
         return result;
@@ -146,7 +161,7 @@ const updateTutorProfile = async (tutorId: string, tutorData: tutorInfo) => {
                     availabilities: {
                         deleteMany: {},
                         create: availabilities.map((slot: any) => ({
-                            dayOfWeek: slot.dayOfWeek,
+                            dayOfWeek: [...slot.dayOfWeek],
                             startTime: slot.startTime,
                             endTime: slot.endTime
                         }))
@@ -222,7 +237,10 @@ const getTutorProfile = async (tutorId: string) => {
                 userId: tutorId,
             },
             include: {
-                user: true
+                user: true,
+                availabilities: true,
+                category: true,
+                reviews: true
             },
 
         })

@@ -37,16 +37,36 @@ enum dayOfWeek {
 }
 
 enum Subjects {
+  // General
   MATH
-  SCIENCE
   ENGLISH
-  HISTORY
-  COMPUTER_SCIENCE
-  ART
-  MUSIC
+  SCIENCE
+  
+  // Specific Math
+  CALCULUS
+  ALGEBRA
+  GEOMETRY
+  
+  // Science
   PHYSICS
   CHEMISTRY
   BIOLOGY
+  ICT
+  
+  // Business
+  ACCOUNTING
+  FINANCE
+  ECONOMICS
+  MARKETING
+  
+  // Tech
+  PROGRAMMING
+  WEB_DEVELOPMENT
+  DATA_SCIENCE
+  
+  // Prep
+  IELTS
+  ADMISSION_TEST
 }
 
 // ===== AUTH MODELS =====

@@ -6,6 +6,8 @@ const router = Router();
 
 router.get("/all-users", auth(UserRole.ADMIN) ,adminController.getAllUsers);
 
+router.get("/all-bookings", auth(UserRole.ADMIN), adminController.getAllBookings)
+
 router.get("/stats", auth(UserRole.ADMIN), adminController.getAllStats)
 
 router.put("/manage-user/:userId", auth(UserRole.ADMIN), adminController.manageUserStatus);

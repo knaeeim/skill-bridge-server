@@ -110,10 +110,23 @@ const getAllStats = async () => {
     }
 }
 
+const getAllBookings = async () => {
+    try {
+        const result = await prisma.booking.findMany({});
+        return result;
+    } catch (error : unknown) {
+        if(error instanceof Error){
+            throw new Error(error.message);
+        }
+        throw new Error("Fetching all bookings failed");
+    }
+}
+
 export const adminServices = {
     getAllUsers,
     manageUserStatus,
     createCategory, 
     getAllCategories, 
-    getAllStats
+    getAllStats,
+    getAllBookings
 }

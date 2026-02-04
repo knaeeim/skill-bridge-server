@@ -57,13 +57,25 @@ const getAllCategories = async (req: Request, res: Response) => {
 
 const getAllStats = async (req: Request, res: Response) => {
     try {
-        const result = await adminServices.getAllStats(); 
+        const result = await adminServices.getAllStats();
         res.status(200).json({ success: true, data: result });
-    } catch (error : unknown) {
-        if(error instanceof Error) {
-            return res.status(500).json({ message : error.message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
         }
-        res.status(500).json({ message : "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+const getAllBookings = async (req: Request, res: Response) => {
+    try {
+        const result = await adminServices.getAllBookings();
+        res.status(200).json({ success: true, data: result });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
@@ -72,5 +84,6 @@ export const adminController = {
     manageUserStatus,
     createCategory,
     getAllCategories,
-    getAllStats
+    getAllStats,
+    getAllBookings
 }

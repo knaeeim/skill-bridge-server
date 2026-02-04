@@ -13,6 +13,10 @@ interface tutorInfo {
     category?: string[]
 }
 
+interface TutorAvailability {
+    availabilities: Availability[]
+}
+
 interface tutorInfoUpdate {
     name?: string,
     image?: string,
@@ -86,8 +90,6 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
             })
         }
 
-        console.log(queries.isFeatured);
-
         return await prisma.user.findMany({
             skip,
             take: limit,
@@ -159,9 +161,9 @@ const createTutorProfile = async (tutorData: tutorInfo) => {
     }
 }
 
-const updateTutorProfileAvailability = async (userId: string, tutorData: tutorInfoUpdate) => {
+const updateTutorProfileAvailability = async (userId: string, tutorData: TutorAvailability) => {
     try {
-        const { category, availabilities, name, image, ...rest } = tutorData;
+        const availabilities = tutorData;
         const formattedAvailabilities = [];
 
         if (availabilities && Array.isArray(availabilities)) {
@@ -178,26 +180,12 @@ const updateTutorProfileAvailability = async (userId: string, tutorData: tutorIn
         const result = await prisma.tutorProfile.update({
             where: { userId },
             data: {
-                ...rest,
-                ...(category && {
-                    category: {
-                        set: category.map((catId: string) => ({ id: catId }))
-                    }
-                }),
                 ...(formattedAvailabilities && {
                     availabilities: {
                         deleteMany: {},
                         create: formattedAvailabilities
                     }
                 }),
-                ...(name || image) && {
-                    user: {
-                        update: {
-                            ...(name && { name }),
-                            ...(image && { image })
-                        }
-                    }
-                }
             },
             include: {
                 availabilities: {

@@ -38,8 +38,6 @@ const createBooking = async (bookingData: BookingData) => {
             throw new Error("Tutor is fully booked for the selected time slot");
         }
 
-        console.log(bookingData);
-
         const { date, ...rest } = bookingData;
         const result = await prisma.booking.create({
             data: {

@@ -1,6 +1,7 @@
 import { User } from "better-auth/types";
 import { UserStatus } from "../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
+import { UserRole } from "../../middleware/auth";
 
 const getAllUsers = async (isActive: UserStatus) => {
     try {
@@ -62,9 +63,57 @@ const getAllCategories = async () => {
     }
 }
 
+const getAllStats = async () => {
+    try {
+        const stats = await prisma.$transaction(async (tx) => {
+            const totalUser = await tx.user.count({});
+            const totalTutors = await tx.user.count({
+                where: { role: UserRole.TUTOR }
+            })
+            const totalStudents = await tx.user.count({
+                where: { role: UserRole.STUDENT }
+            })
+            const totalBookings = await tx.booking.count({});
+            const totalCategories = await tx.category.count({});
+            const totalSale = await tx.booking.aggregate({
+                _sum: {
+                    price: true,
+                }
+            })
+            const avgSale = await tx.booking.aggregate({
+                _avg: {
+                    price: true,
+                }
+            })
+            const totalBanUsers = await tx.user.count({
+                where: { status: "BANNED" }
+            })
+
+            return {
+                totalUser,
+                totalTutors,
+                totalStudents,
+                totalBookings,
+                totalCategories,
+                totalSale,
+                avgSale,
+                totalBanUsers
+            }
+        })
+
+        return stats;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Fetching stats failed");
+    }
+}
+
 export const adminServices = {
     getAllUsers,
     manageUserStatus,
     createCategory, 
-    getAllCategories
+    getAllCategories, 
+    getAllStats
 }

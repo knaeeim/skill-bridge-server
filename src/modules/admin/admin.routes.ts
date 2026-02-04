@@ -1,14 +1,17 @@
 import { Router } from "express";
 import { adminController } from "./admin.controller";
+import auth, { UserRole } from "../../middleware/auth";
 
 const router = Router();
 
-router.get("/all-users", adminController.getAllUsers);
+router.get("/all-users", auth(UserRole.ADMIN) ,adminController.getAllUsers);
 
-router.put("/manage-user/:userId", adminController.manageUserStatus);
+router.get("/stats", auth(UserRole.ADMIN), adminController.getAllStats)
 
-router.post("/create-category", adminController.createCategory);
+router.put("/manage-user/:userId", auth(UserRole.ADMIN), adminController.manageUserStatus);
 
-router.get("/all-categories", adminController.getAllCategories);
+router.post("/create-category", auth(UserRole.ADMIN), adminController.createCategory);
+
+router.get("/all-categories", auth(UserRole.ADMIN), adminController.getAllCategories);
 
 export const adminRouter = router

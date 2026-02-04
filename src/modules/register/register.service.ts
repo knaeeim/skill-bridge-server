@@ -49,8 +49,6 @@ const register = async (userData: { email: string, password: string, name: strin
 
         userId = result.user.id;
 
-        console.log(profile);
-
         let response = null;
 
         if (userData.role === UserRole.TUTOR) {
@@ -107,5 +105,5 @@ const getCurrentUser = async (userId: string, role: UserRole) => {
 
 export const registrationServices = {
     register,
-    getCurrentUser
+    getCurrentUser,
 }

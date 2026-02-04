@@ -19,7 +19,6 @@ const updateTutorProfileAvailability = async (req: Request, res: Response) => {
         const tutorId = req.user?.id;
         const updateData = req.body;
         const result = await tutorServices.updateTutorProfileAvailability(tutorId as string, updateData);
-        console.log(result);
         res.status(200).json({ success: true, data: result });
     } catch (error: unknown) {
         if (error instanceof Error) {
@@ -47,7 +46,6 @@ const seeRatingAndReviews = async (req: Request, res: Response) => {
     try {
         const tutorId = req.params.tutorId;
         const result = await tutorServices.seeRatingAndReviews(tutorId as string);
-        console.log(result);
         res.status(200).json({ success: true, data: result });
     } catch (error: unknown) {
         if (error instanceof Error) {
@@ -61,7 +59,6 @@ const getTutorProfile = async (req: Request, res: Response) => {
     try {
         const tutorId = req.params.tutorId;
         const result = await tutorServices.getTutorProfile(tutorId as string);
-        console.log(result);
         res.status(200).json({ success: true, data: result });
     } catch (error: unknown) {
         if (error instanceof Error) {

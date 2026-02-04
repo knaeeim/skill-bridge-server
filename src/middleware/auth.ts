@@ -27,8 +27,6 @@ const auth = (...roles: UserRole[]) => {
                 headers: req.headers as any
             });
 
-            console.log(session);
-
             if (!session) {
                 return res.status(401).json({ success: false, message: "You are not authenticated, You need to login First" })
             }
@@ -39,10 +37,6 @@ const auth = (...roles: UserRole[]) => {
                 name: session.user.name,
                 role: session.user.role
             }
-
-            console.log(roles.length);
-            console.log(roles);
-            console.log(req.url)
 
             if (roles.length && !roles.includes(req.user.role as UserRole)) {
                 return res.status(401).json({

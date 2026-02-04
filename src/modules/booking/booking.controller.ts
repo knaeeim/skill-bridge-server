@@ -18,7 +18,6 @@ const createBooking = async (req: Request, res: Response) => {
     try {
         const bookingData = req.body as BookingData;
         const result = await bookingServices.createBooking(bookingData);
-        console.log("Booking from Controller", result);
         return res.status(201).json({ success: true, data: result });
     } catch (error: unknown) {
         if (error instanceof Error) {
@@ -32,7 +31,6 @@ const getUsersBookings = async (req: Request, res: Response) => {
     try {
         const userId = req.user?.id as string;
         const role = req.user?.role as string;
-        console.log(role);
         const result = await bookingServices.getUsersBookings(userId as string, role as UserRole);
         res.status(200).json({ success: true, data: result });
     } catch (error: unknown) {

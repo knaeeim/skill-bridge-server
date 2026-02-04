@@ -26,28 +26,24 @@ const studentProfileStats = async (studentId: string) => {
     try {
         const result = await prisma.$transaction(async (tx) => {
             const bookingsCount = await tx.booking.count({
-                where : {
-                    studentId
+                where: {
+                    studentId : studentId
                 }
             })
 
             const reviewsCount = await tx.review.count({
-                where : {
-                    studentId
+                where: {
+                    studentId : studentId
                 }
             })
 
             const totalSpentAgg = await tx.booking.aggregate({
-                where :{
-                    studentId
-                }, 
-                _sum : {
-                    price : true,
-                    
+                where: {
+                    studentId : studentId
                 },
-                _avg : {
-                    price : true
-                }
+                _sum: {
+                    price: true,
+                },
             })
 
             return {
@@ -85,8 +81,49 @@ const getCurrentUser = async (userId: string, role: UserRole) => {
     }
 }
 
+const updateStudentProfile = async (userId: string, userData: { name?: string, bio?: string, image?: string }) => {
+    try {
+        const { name, bio, image } = userData;
+        const result = await prisma.$transaction(async (tx) => {
+            if (name || image) {
+                await tx.user.update({
+                    where: { id: userId },
+                    data: {
+                        ...(name && { name }),
+                        ...(image && { image })
+                    }
+                })
+            }
+
+            if (bio) {
+                await tx.studentProfile.update({
+                    where: { userId },
+                    data: {
+                        bio
+                    }
+                })
+            }
+
+            const updatedData = await tx.user.findUnique({
+                where: { id: userId },
+                include: {
+                    studentProfile: true
+                }
+            })
+            return updatedData;
+        })
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Updating student profile failed");
+    }
+}
+
 export const studentService = {
     createStudentProfile,
     studentProfileStats,
-    getCurrentUser
+    getCurrentUser, 
+    updateStudentProfile
 }

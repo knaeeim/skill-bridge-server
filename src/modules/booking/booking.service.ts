@@ -38,12 +38,14 @@ const createBooking = async (bookingData: BookingData) => {
             throw new Error("Tutor is fully booked for the selected time slot");
         }
 
+        console.log(bookingData);
+
         const { date, ...rest } = bookingData;
         const result = await prisma.booking.create({
             data: {
                 date: new Date(date),
                 ...rest
-            }
+            }, 
         })
         return result;
     } catch (error: unknown) {
@@ -60,6 +62,10 @@ const getUsersBookings = async (userId: string, role: UserRole) => {
         const result = await prisma.booking.findMany({
             where: {
                 ...rolebasedFilter,
+            }, 
+            include : {
+                tutor : true,
+                student : true
             }
         })
         return result;

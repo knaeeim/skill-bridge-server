@@ -2,10 +2,10 @@ import { Router } from "express";
 import { studentController } from "./student.controller";
 import auth, { UserRole } from "../../middleware/auth";
 
-const router = Router(); 
+const router = Router();
 
-router.get("/student-profile/stats", studentController.studentProifleStats);
+router.get("/student-profile/stats/:studentId", studentController.studentProifleStats);
 
-router.get("/current-user", auth(UserRole.STUDENT), studentController.getCurrentUser)
+router.put("/update-student-profile/:userId", auth(UserRole.STUDENT), studentController.updateStudentProfile);
 
 export const studentRoutes = router;

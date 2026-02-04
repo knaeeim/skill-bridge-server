@@ -13,7 +13,17 @@ interface tutorInfo {
     category?: string[]
 }
 
-const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string, page?: number, limit?: number, sortBy?: string, isFeatured?: string }) => {
+interface tutorInfoUpdate {
+    name?: string,
+    image?: string,
+    hourlyRate?: number,
+    bio?: string
+    subjects?: Subjects[],
+    availabilities?: Availability[]
+    category?: string[]
+}
+
+const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: number, hourlyRate?: number, sortOrder?: string, page?: number, limit?: number, sortBy?: string, isFeatured?: string, isApproved?: string }) => {
     try {
         const andConditions: TutorProfileWhereInput[] = [];
 
@@ -69,6 +79,13 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
             })
         }
 
+        if (queries.isApproved) {
+            const isApprovedBool = queries.isApproved === "true" ? true : false;
+            andConditions.push({
+                isApproved: isApprovedBool
+            })
+        }
+
         console.log(queries.isFeatured);
 
         return await prisma.user.findMany({
@@ -99,8 +116,6 @@ const createTutorProfile = async (tutorData: tutorInfo) => {
         const { category, availabilities, ...rest } = tutorData;
 
         const formattedAvailabilities = [];
-
-        console.log("availabilities ---- ", availabilities);
 
         if (availabilities && Array.isArray(availabilities)) {
             for (const slot of availabilities) {
@@ -144,12 +159,24 @@ const createTutorProfile = async (tutorData: tutorInfo) => {
     }
 }
 
-const updateTutorProfile = async (tutorId: string, tutorData: tutorInfo) => {
+const updateTutorProfileAvailability = async (userId: string, tutorData: tutorInfoUpdate) => {
     try {
-        const { category, availabilities, ...rest } = tutorData;
-        console.log(category);
+        const { category, availabilities, name, image, ...rest } = tutorData;
+        const formattedAvailabilities = [];
+
+        if (availabilities && Array.isArray(availabilities)) {
+            for (const slot of availabilities) {
+                if (slot.dayOfWeek && Array.isArray(slot.dayOfWeek)) {
+                    formattedAvailabilities.push({
+                        dayOfWeek: slot.dayOfWeek,
+                        startTime: slot.startTime,
+                        endTime: slot.endTime
+                    })
+                }
+            }
+        }
         const result = await prisma.tutorProfile.update({
-            where: { id: tutorId },
+            where: { userId },
             data: {
                 ...rest,
                 ...(category && {
@@ -157,17 +184,20 @@ const updateTutorProfile = async (tutorId: string, tutorData: tutorInfo) => {
                         set: category.map((catId: string) => ({ id: catId }))
                     }
                 }),
-                ...(availabilities && {
+                ...(formattedAvailabilities && {
                     availabilities: {
                         deleteMany: {},
-                        create: availabilities.map((slot: any) => ({
-                            dayOfWeek: [...slot.dayOfWeek],
-                            startTime: slot.startTime,
-                            endTime: slot.endTime
-                        }))
-
+                        create: formattedAvailabilities
                     }
-                })
+                }),
+                ...(name || image) && {
+                    user: {
+                        update: {
+                            ...(name && { name }),
+                            ...(image && { image })
+                        }
+                    }
+                }
             },
             include: {
                 availabilities: {
@@ -181,8 +211,54 @@ const updateTutorProfile = async (tutorId: string, tutorData: tutorInfo) => {
                     select: {
                         name: true
                     }
+                },
+                user: {
+                    select: {
+                        name: true,
+                        image: true,
+                    }
                 }
             }
+        })
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Updating tutor profile failed");
+    }
+}
+
+const updateTutorProfile = async (userId: string, tutorData: { name?: string, image?: string, hourlyRate?: number, bio?: string }) => {
+    try {
+        const result = await prisma.$transaction(async (tx) => {
+            const { name, image, hourlyRate, bio } = tutorData;
+            if (name || image) {
+                await tx.user.update({
+                    where: { id: userId },
+                    data: {
+                        ...(name && { name }),
+                        ...(image && { image })
+                    }
+                })
+            }
+
+            if (hourlyRate || bio) {
+                await tx.tutorProfile.update({
+                    where: { userId },
+                    data: {
+                        ...(bio && { bio }),
+                        ...(hourlyRate && { hourlyRate })
+                    }
+                })
+            }
+            const updatedData = await tx.user.findUnique({
+                where: { id: userId },
+                include: {
+                    tutorProfile: true
+                }
+            })
+            return updatedData;
         })
         return result;
     } catch (error: unknown) {
@@ -253,11 +329,53 @@ const getTutorProfile = async (tutorId: string) => {
     }
 }
 
+const getTutorStats = async (tutorId: string) => {
+    try {
+        const result = await prisma.$transaction(async (tx) => {
+            const totalBooking = await tx.booking.count({
+                where: {
+                    tutorId
+                },
+            })
+
+            const totalRevenueAgg = await tx.booking.aggregate({
+                where: {
+                    tutorId
+                },
+                _sum: {
+                    price: true
+                }
+            })
+
+            const totalReview = await tx.review.count({
+                where: { tutorId }
+            })
+
+            return {
+                totalBooking,
+                totalRevenue: totalRevenueAgg._sum.price,
+                totalReview
+            }
+        }, {
+            maxWait: 5000,
+            timeout: 10000
+        })
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Fetching tutor stats failed");
+    }
+}
+
 
 export const tutorServices = {
     createTutorProfile,
+    updateTutorProfileAvailability,
     updateTutorProfile,
     seeRatingAndReviews,
     getAllTutors,
-    getTutorProfile
+    getTutorProfile,
+    getTutorStats
 }

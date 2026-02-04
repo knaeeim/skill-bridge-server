@@ -166,7 +166,7 @@ model TutorProfile {
   hourlyRate      Int
   rating          Float   @default(0)
   totalReviews    Int     @default(0)
-  isApproved      Boolean @default(false)
+  isApproved      Boolean @default(true)
   isFeatured      Boolean @default(false)
 
   category       Category[]

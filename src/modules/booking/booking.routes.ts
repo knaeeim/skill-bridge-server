@@ -12,4 +12,6 @@ router.get("/user-bookings", auth(UserRole.STUDENT, UserRole.TUTOR), bookingCont
 
 router.get("/booking-details/:bookingId", bookingController.getBookingDetails)
 
+router.put("/mark-booking-as-completed/:bookingId", auth(UserRole.TUTOR), bookingController.markBookingAsCompleted);
+
 export const bookingRouter = router;

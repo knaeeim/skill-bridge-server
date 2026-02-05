@@ -5,6 +5,7 @@ const createReview = async (req: Request, res: Response) => {
     try {
         const reviewData: ReviewData = req.body;
         const result = await reviewServices.createReview(reviewData);
+        console.log(result);
         res.status(201).json({ success: true, data: result });
     } catch (error: unknown) {
         if (error instanceof Error) {

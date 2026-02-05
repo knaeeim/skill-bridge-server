@@ -14,6 +14,6 @@ router.put("/manage-user/:userId", auth(UserRole.ADMIN), adminController.manageU
 
 router.post("/create-category", auth(UserRole.ADMIN), adminController.createCategory);
 
-router.get("/all-categories", auth(UserRole.ADMIN), adminController.getAllCategories);
+router.get("/all-categories", adminController.getAllCategories);
 
 export const adminRouter = router

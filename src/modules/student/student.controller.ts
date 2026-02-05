@@ -43,8 +43,23 @@ const updateStudentProfile = async (req: Request, res: Response) => {
     }
 }
 
+const cancelBooking = async (req: Request, res: Response) => {
+    try {
+        const bookingId = req.params.bookingId;
+        const result = await studentService.cancelBooking(bookingId as string);
+        res.status(200).json({ success: true, data: result });
+    } catch (error : unknown) {
+        if(error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
 export const studentController = {
     studentProifleStats,
     getCurrentUser,
-    updateStudentProfile
+    updateStudentProfile,
+    cancelBooking
 }
+

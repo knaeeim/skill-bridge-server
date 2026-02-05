@@ -2,15 +2,30 @@ import { User } from "better-auth/types";
 import { UserStatus } from "../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { UserRole } from "../../middleware/auth";
+import { includes } from "better-auth/*";
+import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 
-const getAllUsers = async (isActive: UserStatus) => {
+const getAllUsers = async (isActive: UserStatus, page: number, limit: number) => {
     try {
+        const { page: currentPage, limit: currentLimit, sortBy, sortOrder, skip } = paginationSortingHelper({ page, limit })
         const result = await prisma.user.findMany({
+            skip,
+            take: currentLimit,
             where: {
                 status: isActive
             }
         });
-        return result;
+        const total = await prisma.user.count({})
+        
+        return {
+            data: result,
+            pagination: {
+                page: currentPage,
+                limit: currentLimit,
+                total,
+                totalPages: Math.ceil(total / currentLimit)
+            }
+        };
     } catch (error: unknown) {
         if (error instanceof Error) {
             throw new Error(error.message);
@@ -55,8 +70,8 @@ const getAllCategories = async () => {
     try {
         const result = await prisma.category.findMany({});
         return result;
-    } catch (error : unknown) {
-        if(error instanceof Error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
             throw new Error(error.message);
         }
         throw new Error("Fetching all categories failed");
@@ -114,8 +129,8 @@ const getAllBookings = async () => {
     try {
         const result = await prisma.booking.findMany({});
         return result;
-    } catch (error : unknown) {
-        if(error instanceof Error){
+    } catch (error: unknown) {
+        if (error instanceof Error) {
             throw new Error(error.message);
         }
         throw new Error("Fetching all bookings failed");
@@ -125,8 +140,8 @@ const getAllBookings = async () => {
 export const adminServices = {
     getAllUsers,
     manageUserStatus,
-    createCategory, 
-    getAllCategories, 
+    createCategory,
+    getAllCategories,
     getAllStats,
     getAllBookings
 }

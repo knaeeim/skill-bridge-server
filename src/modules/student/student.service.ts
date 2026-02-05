@@ -27,29 +27,47 @@ const studentProfileStats = async (studentId: string) => {
         const result = await prisma.$transaction(async (tx) => {
             const bookingsCount = await tx.booking.count({
                 where: {
-                    studentId : studentId
+                    studentId: studentId,
+                    status : "COMPLETED"
+                }
+            })
+
+            const inProgressBooking = await tx.booking.count({
+                where : {
+                    studentId : studentId,
+                    status : "CONFIRMED"
                 }
             })
 
             const reviewsCount = await tx.review.count({
                 where: {
-                    studentId : studentId
+                    studentId: studentId
                 }
             })
 
             const totalSpentAgg = await tx.booking.aggregate({
                 where: {
-                    studentId : studentId
+                    studentId: studentId,
+                    status : "COMPLETED"
                 },
                 _sum: {
                     price: true,
                 },
             })
 
+            const totalCancelled = await tx.booking.count({
+                where : {
+                    studentId : studentId,
+                    status : "CANCELLED"
+                }
+            })
+
             return {
                 totalSpentAgg,
                 bookingsCount,
-                reviewsCount
+                reviewsCount,
+                totalCancelled,
+                inProgressBooking
             }
         }, {
             maxWait: 5000,
@@ -121,9 +139,27 @@ const updateStudentProfile = async (userId: string, userData: { name?: string, b
     }
 }
 
+const cancelBooking = async (bookingId: string) => {
+    try {
+        const result = await prisma.booking.update({
+            where: { id: bookingId },
+            data: {
+                status : "CANCELLED"
+            }
+        })
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Cancelling booking failed");
+    }
+}
+
 export const studentService = {
     createStudentProfile,
     studentProfileStats,
-    getCurrentUser, 
-    updateStudentProfile
+    getCurrentUser,
+    updateStudentProfile, 
+    cancelBooking
 }

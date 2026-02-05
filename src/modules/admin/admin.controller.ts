@@ -4,9 +4,10 @@ import { UserStatus } from "../../generated/prisma/enums";
 
 const getAllUsers = async (req: Request, res: Response) => {
     try {
-        const { isActive } = req.query;
-        const result = await adminServices.getAllUsers(isActive as UserStatus);
-        const refineData = result.length === 0 ? "No Users Found" : result;
+        const { isActive, page, limit } = req.query;
+
+        const result = await adminServices.getAllUsers(isActive as UserStatus, Number(page), Number(limit));
+        const refineData = result.data.length === 0 ? "No Users Found" : result;
         res.status(200).json({ success: true, data: refineData });
     } catch (error: unknown) {
         if (error instanceof Error) {
@@ -19,8 +20,9 @@ const getAllUsers = async (req: Request, res: Response) => {
 const manageUserStatus = async (req: Request, res: Response) => {
     try {
         const userId = req.params.userId;
-        const { isActive } = req.body;
-        const result = await adminServices.manageUserStatus(userId as string, isActive as UserStatus);
+        const { status } = req.body;
+        console.log(status);
+        const result = await adminServices.manageUserStatus(userId as string, status as UserStatus);
         res.status(200).json({ success: true, data: result });
     } catch (error: unknown) {
         if (error instanceof Error) {

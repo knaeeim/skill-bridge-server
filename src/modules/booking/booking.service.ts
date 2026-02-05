@@ -43,7 +43,7 @@ const createBooking = async (bookingData: BookingData) => {
             data: {
                 date: new Date(date),
                 ...rest
-            }, 
+            },
         })
         return result;
     } catch (error: unknown) {
@@ -60,10 +60,14 @@ const getUsersBookings = async (userId: string, role: UserRole) => {
         const result = await prisma.booking.findMany({
             where: {
                 ...rolebasedFilter,
-            }, 
-            include : {
-                tutor : true,
-                student : true
+            },
+            include: {
+                tutor: {
+                    include: {
+                        tutorProfile: true
+                    }
+                },
+                student: true,
             }
         })
         return result;
@@ -75,25 +79,45 @@ const getUsersBookings = async (userId: string, role: UserRole) => {
     }
 }
 
-const getBookingDetails = async (bookingId : string) => {
+const getBookingDetails = async (bookingId: string) => {
     try {
         const result = await prisma.booking.findUnique({
-            where : {
-                id : bookingId
+            where: {
+                id: bookingId
             }
         })
         return result;
-    } catch (error : unknown) {
-        if(error instanceof Error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
             throw new Error(error.message);
         }
         throw new Error("Fetching booking details failed");
     }
 }
 
+const markBookingAsCompleted = async (bookingId: string) => {
+    try {
+        const result = await prisma.booking.update({
+            where: {
+                id: bookingId
+            },
+            data: {
+                status: "COMPLETED"
+            }
+        })
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        throw new Error("Marking booking as completed failed");
+    }
+}
+
 export const bookingServices = {
     getAllBookings,
     createBooking,
-    getUsersBookings, 
-    getBookingDetails
+    getUsersBookings,
+    getBookingDetails,
+    markBookingAsCompleted
 }

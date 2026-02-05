@@ -90,7 +90,7 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
             })
         }
 
-        return await prisma.user.findMany({
+        const result = await prisma.user.findMany({
             skip,
             take: limit,
             where: {
@@ -105,6 +105,22 @@ const getAllTutors = async (queries: { subject?: Subjects, experienceYears?: num
             },
             orderBy: orderbyConditions
         })
+
+        const total = await prisma.tutorProfile.count({
+            where: {
+                AND: andConditions
+            }
+        })
+
+        return {
+            data: result,
+            pagination: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
+            }
+        }
     } catch (error: unknown) {
         if (error instanceof Error) {
             throw new Error(error.message);
@@ -304,7 +320,11 @@ const getTutorProfile = async (tutorId: string) => {
                 user: true,
                 availabilities: true,
                 category: true,
-                reviews: true
+                reviews: {
+                    include: {
+                        student: true
+                    }
+                }
             },
 
         })
@@ -320,29 +340,67 @@ const getTutorProfile = async (tutorId: string) => {
 const getTutorStats = async (tutorId: string) => {
     try {
         const result = await prisma.$transaction(async (tx) => {
+
+            const tutorProfile = await tx.tutorProfile.findUnique({
+                where : {
+                    id: tutorId
+                }, 
+                select : {
+                    id : true,
+                }
+            })
+
             const totalBooking = await tx.booking.count({
                 where: {
-                    tutorId
+                    tutorId,
+                    status: "COMPLETED"
                 },
             })
 
-            const totalRevenueAgg = await tx.booking.aggregate({
+            const totalRevenue = await tx.booking.aggregate({
                 where: {
-                    tutorId
+                    tutorId,
+                    status: "COMPLETED"
                 },
                 _sum: {
                     price: true
                 }
             })
 
-            const totalReview = await tx.review.count({
-                where: { tutorId }
+            const totalReviews = await tx.review.count({
+                where: { tutorId: tutorId },
+            })
+
+            const totalRatings = await tx.tutorProfile.aggregate({
+                where: {
+                    id: tutorId,
+                },
+                _sum: {
+                    rating: true
+                }
+            })
+
+            const totalCancelled = await tx.booking.count({
+                where: {
+                    tutorId,
+                    status: "CANCELLED"
+                }
+            })
+
+            const inprogressBooking = await tx.booking.count({
+                where: {
+                    tutorId,
+                    status: "CONFIRMED"
+                }
             })
 
             return {
                 totalBooking,
-                totalRevenue: totalRevenueAgg._sum.price,
-                totalReview
+                totalRevenue,
+                totalReviews,
+                totalRatings: totalRatings._sum.rating,
+                totalCancelled,
+                inprogressBooking
             }
         }, {
             maxWait: 5000,

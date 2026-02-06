@@ -342,11 +342,11 @@ const getTutorStats = async (tutorId: string) => {
         const result = await prisma.$transaction(async (tx) => {
 
             const tutorProfile = await tx.tutorProfile.findUnique({
-                where : {
-                    id: tutorId
-                }, 
-                select : {
-                    id : true,
+                where: {
+                    userId: tutorId
+                },
+                select: {
+                    id: true,
                 }
             })
 
@@ -366,18 +366,20 @@ const getTutorStats = async (tutorId: string) => {
                     price: true
                 }
             })
+            let reviewStats = { _count: { id: 0 }, _avg: { rating: 0 } };
 
-            const totalReviews = await tx.review.count({
-                where: { tutorId: tutorId },
-            })
+            if (tutorProfile) {
+                reviewStats = await tx.review.aggregate({
+                    where: { tutorId: tutorProfile.id }, // Uses Profile ID
+                    _count: { id: true },
+                    _avg: { rating: true }
+                });
+            }
 
-            const totalRatings = await tx.tutorProfile.aggregate({
+            const totalRatings = await tx.tutorProfile.count({
                 where: {
                     id: tutorId,
                 },
-                _sum: {
-                    rating: true
-                }
             })
 
             const totalCancelled = await tx.booking.count({
@@ -397,8 +399,8 @@ const getTutorStats = async (tutorId: string) => {
             return {
                 totalBooking,
                 totalRevenue,
-                totalReviews,
-                totalRatings: totalRatings._sum.rating,
+                totalReviews : reviewStats._count.id,
+                averageRatings : reviewStats._avg.rating,
                 totalCancelled,
                 inprogressBooking
             }
